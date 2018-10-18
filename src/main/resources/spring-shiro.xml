@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+	
+	<bean id="sessionListener" class="com.sz.common.shiro.ShiroListener"></bean>
+	
+	<bean id="sessionIdGenerator" class="org.apache.shiro.session.mgt.eis.JavaUuidSessionIdGenerator"/>
+    <bean id="sessionDAO" class="org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO">
+        <property name="activeSessionsCacheName" value="shiro-activeSessionCache"/>
+        <property name="sessionIdGenerator" ref="sessionIdGenerator"/>
+    </bean>
+    
+    
+    <bean id="sessionIdCookie" class="org.apache.shiro.web.servlet.SimpleCookie">
+        <constructor-arg value="sid"/>
+        <property name="httpOnly" value="true"/>
+        <property name="maxAge" value="-1"/>
+    </bean>
+    <bean id="rememberMeCookie" class="org.apache.shiro.web.servlet.SimpleCookie">  
+	    <constructor-arg value="rememberMe"/>  
+	    <property name="httpOnly" value="true"/>  
+	    <property name="maxAge" value="2592000"/><!-- 30天 -->  
+	</bean>
+    <bean id="rememberMeManager" class="org.apache.shiro.web.mgt.CookieRememberMeManager">  
+	    <property name="cipherKey" value="#{T(org.apache.shiro.codec.Base64).decode('4AvVhmFLUs0KTA3Kprsdag==')}"/>  
+	    <property name="cookie" ref="rememberMeCookie"/>  
+	</bean>
+    
+	
+	<bean id="sessionValidationScheduler" class="org.apache.shiro.session.mgt.quartz.QuartzSessionValidationScheduler">
+        <property name="sessionValidationInterval" value="1800000"/>
+        <property name="sessionManager" ref="sessionManager"/>
+    </bean>
+    
+	<bean id="sessionManager" class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">
+		<property name="sessionIdUrlRewritingEnabled" value="false" />
+	
+        <property name="globalSessionTimeout" value="1800000"/>
+        <property name="deleteInvalidSessions" value="true"/>
+        <property name="sessionValidationSchedulerEnabled" value="true"/>
+        <property name="sessionValidationScheduler" ref="sessionValidationScheduler"/>
+        <property name="sessionDAO" ref="sessionDAO"/>
+        <property name ="sessionListeners" ref="sessionListener" />
+        
+        <property name="sessionIdCookieEnabled" value="true"/>
+        <property name="sessionIdCookie" ref="sessionIdCookie"/>
+        
+    </bean>
+    
+    
+    
+    <bean id="cacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager"/>
+	<bean id="myRealm" class="com.sz.common.shiro.MyRealm" /> 
+	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">  
+	    <property name="realm" ref="myRealm" />
+	    <property name="sessionManager" ref="sessionManager"/>
+	    <property name="cacheManager" ref="cacheManager"/>
+	    
+	    <property name="rememberMeManager" ref="rememberMeManager"/>
+	</bean>  
+	   
+	
+	<bean id="captchaFilter" class="com.sz.common.shiro.MyFormAuthenticationFilter" />  
+	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">  
+	    <property name="securityManager" ref="securityManager"/>  
+	    <property name="loginUrl" value="/login"/>  
+	    <!-- 登录成功后要跳转的连接 -->  
+	    <!--<property name="successUrl" value="/main.do"/>-->
+	    <property name="unauthorizedUrl" value="/error/403"/> 
+	    
+	    <property name="filters">
+	    	<map>
+	    		<entry key="authc" value-ref="captchaFilter"/>
+	    	</map>
+	    </property>
+	       
+	    <property name="filterChainDefinitions">  
+	        <value>
+	             /index.jsp=anon
+	             /captcha.jpg=anon
+	             /error/**=anon
+	             /login=authc
+	             /static/**=anon
+	             /**=authc
+	        </value>  
+	    </property>
+	</bean> 
+	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
+	
+	<!-- 开启授权的注解模式 -->
+	<bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+    	<property name="securityManager" ref="securityManager"></property>
+    </bean>
+   
+</beans>

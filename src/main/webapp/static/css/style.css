@@ -1,0 +1,37 @@
+@charset "utf-8";
+.stable {
+	font-family: verdana,arial,sans-serif;
+	font-size:11px;
+	color:#333333;
+	border-width: 1px;
+	border-color: #666666;
+	border-collapse: collapse;
+}
+.stable th {
+	border-width: 1px;
+	padding: 8px;
+	border-style: solid;
+	border-color: #666666;
+	background-color: #dedede;
+}
+.stable td {
+	border-width: 1px;
+	padding: 8px;
+	border-style: solid;
+	border-color: #666666;
+	background-color: #ffffff;
+}
+
+.stable tr:hover{
+	background-color: #eeeeee;
+}
+.stable tr:hover td{
+	background: none;
+}
+
+.szPageDiv{font-size:12px;padding: 15px 20px;text-align: left;color: #ccc;}
+.szPageDiv a{text-decoration:none;display: inline-block;color: #428bca;display: inline-block;height: 25px;line-height: 25px;padding: 0 10px;border: 1px solid #ddd;margin: 0 2px;border-radius: 4px;vertical-align: middle;}
+.szPageDiv a:hover{text-decoration: none;border: 1px solid #428bca;}
+.szPageDiv a.current{display: inline-block;height: 25px;line-height: 25px;padding: 0 10px;margin: 0 2px;color: #fff;background-color: #428bca;	border: 1px solid #428bca;border-radius: 4px;vertical-align: middle;}
+.szPageDiv a.disabled{display: inline-block;height: 25px;line-height: 25px;padding: 0 10px;margin: 0 2px;	color: #bfbfbf;background: #f2f2f2;border: 1px solid #bfbfbf;border-radius: 4px;vertical-align: middle;}
+.szPageDiv .szPageSpan{text-decoration: none;border: 1px solid #428bca;display: inline-block;color: #428bca;display: inline-block;height: 25px;line-height: 25px;padding: 0 10px;margin: 0 2px;border-radius: 4px;vertical-align: middle;}
