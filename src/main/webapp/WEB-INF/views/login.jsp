@@ -5,6 +5,10 @@
 <%@ include file="/WEB-INF/inc.jsp" %>
 <title>登录</title>
 <script type="text/javascript">
+$(function(){
+	changeCaptcha();
+})
+
 function changeCaptcha(){
 	document.getElementById("captchaImg").src="captcha.jpg?time="+new Date().getTime();
 }

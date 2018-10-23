@@ -81,9 +81,22 @@ public class QuartzManager {
 		}
 	}
 	
-	public static void modifyJobTime(String jobName,String triggerGroupName,String expression) throws SchedulerException, ParseException{
+	public static void modifyJobTime(String jobName,String expression) throws SchedulerException, ParseException{
 		Scheduler sched = sf.getScheduler();
 		CronTrigger trigger = (CronTrigger)sched.getTrigger(jobName, TRIGGER_GROUP_NAME);
+		if(trigger != null){
+			String oldTime = trigger.getCronExpression(); 
+			if (!oldTime.equalsIgnoreCase(expression)) {
+				trigger.setCronExpression(expression);
+				sched.rescheduleJob(jobName, TRIGGER_GROUP_NAME, trigger);
+			}
+			
+		}
+	}
+	
+	public static void modifyJobTime(String jobName,String triggerGroupName,String expression) throws SchedulerException, ParseException{
+		Scheduler sched = sf.getScheduler();
+		CronTrigger trigger = (CronTrigger)sched.getTrigger(jobName, triggerGroupName);
 		if(trigger != null){
 			String oldTime = trigger.getCronExpression(); 
 			if (!oldTime.equalsIgnoreCase(expression)) {

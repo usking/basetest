@@ -263,8 +263,22 @@ public class ExampleController extends BaseController {
 		try {
 			Map<String, Object> param=new HashMap<>();
 			param.put("exampleService", exampleService);
-//			QuartzManager.modifyJobTime("testJob", "0/5 * * * * ? ",param);
-			QuartzManager.modifyJobTime("testJob", "DEFAULT_TRIGGER_GROUP_NAME", "0/5 * * * * ?");
+			QuartzManager.modifyJobTime("testJob", "0/5 * * * * ?");
+//			QuartzManager.modifyJobTime("testJob", "0/5 * * * * ?",param);
+//			QuartzManager.modifyJobTime("testJob", "DEFAULT_TRIGGER_GROUP_NAME", "0/5 * * * * ?");
+		}catch(Exception ex) {
+			ex.printStackTrace();
+			result="500";
+		}
+		return result;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="/removeJob")
+	public String removeJob() {
+		String result="200";
+		try {
+			QuartzManager.removeJob("testJob");
 		}catch(Exception ex) {
 			ex.printStackTrace();
 			result="500";

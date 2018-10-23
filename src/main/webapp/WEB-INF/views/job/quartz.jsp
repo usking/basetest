@@ -20,9 +20,15 @@ $(function(){
 		onmessage:function(event){
 			var json=$.parseJSON(event.data);
 			$("#content").append(json.message+"<br />");
+			scrollDiv();
 		}
 	});
 })
+
+function scrollDiv(){
+	var div = document.getElementById('content');
+	div.scrollTop = div.scrollHeight;
+}
 
 function addJob(){
 	$.ajax({
@@ -54,6 +60,21 @@ function modifyJob(){
 	});
 }
 
+function removeJob(){
+	$.ajax({
+		type:"POST",
+		url:"exp/removeJob",
+		//data: {},
+		dataType:"text",
+		success: function(data){
+			layer.alert(data);
+		},
+		error:function(XMLHttpRequest,textStatus){
+			layer.alert("服务器异常");
+		}
+	});
+}
+
 
 
 </script>
@@ -72,6 +93,7 @@ function modifyJob(){
   		<h3>测试定时任务quartz</h3>
   		<a href="javascript:;" class="btn btn-info" onclick="addJob()">开始定时任务</a>
   		<a href="javascript:;" class="btn btn-info" onclick="modifyJob()">执行修改时间</a>
+  		<a href="javascript:;" class="btn btn-info" onclick="removeJob()">删除定时任务</a>
   		
   		<br />
   		
