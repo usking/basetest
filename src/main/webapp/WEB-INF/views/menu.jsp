@@ -38,6 +38,7 @@ $(function(){
     	{id:15, pId:1, name: "treeTable",url:"exp/treetable/index",target:"_self"},
     	{id:15, pId:1, name: "fileupload",url:"exp/fileupload/index",target:"_self"},
     	{id:15, pId:1, name: "quartz-job",url:"exp/quartzIndex",target:"_self"},
+    	{id:15, pId:1, name: "redis",url:"exp/redisIndex",target:"_self"},
     	{id:100, pId:1, name: "百度",url:"http://www.baidu.com/",target:"_blank"},
     	{id:2, pId:0, name: "测试"},
     	{id:21, pId:2, name: "测试1",url:"",target:"_self"},

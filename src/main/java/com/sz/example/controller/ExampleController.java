@@ -2,11 +2,15 @@ package com.sz.example.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.Set;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -22,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.alibaba.fastjson.JSON;
 import com.sz.common.constant.Consts;
 import com.sz.common.controller.BaseController;
 import com.sz.common.csrf.CsrfAnnotation;
@@ -31,6 +36,7 @@ import com.sz.common.job.ExampleJob;
 import com.sz.common.util.CommonUtils;
 import com.sz.common.util.PageModel;
 import com.sz.common.util.QuartzManager;
+import com.sz.common.util.RedisUtils;
 import com.sz.common.util.StringEscapeEditor;
 import com.sz.example.pojo.Idpid;
 import com.sz.example.pojo.Item;
@@ -49,6 +55,8 @@ public class ExampleController extends BaseController {
 	private IdpidService idpidService;
 	@Resource
 	private ExampleService exampleService;
+	@Resource
+	private RedisUtils redisUtils;
 	
 	@InitBinder
     public void initBinder(ServletRequestDataBinder binder) {
@@ -284,5 +292,51 @@ public class ExampleController extends BaseController {
 			result="500";
 		}
 		return result;
+	}
+	
+	/////////////////////////////////////////////
+	
+	@RequestMapping(value="/redisIndex")
+	public String redisIndex(HttpServletRequest request) {
+		List<Item> itemList=this.getRedisItem();
+		request.setAttribute("itemList", itemList);
+		return this.getJspPath("redis/redis");
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="/addRedisItem")
+	public String addRedisItem(Item item) {
+		String result="200";
+		try {
+			item.setId(CommonUtils.getUUID());
+			redisUtils.write("item:"+item.getId(), item, null);
+		}catch(Exception ex) {
+			ex.printStackTrace();
+			result="500";
+		}
+		return result;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="/delRedisItem")
+	public String delRedisItem(String id) {
+		String result="200";
+		try {
+			redisUtils.delete("item:"+id);
+		}catch(Exception ex) {
+			ex.printStackTrace();
+			result="500";
+		}
+		return result;
+	}
+	
+	public List<Item> getRedisItem() {
+		Set<Serializable> itemKeys=redisUtils.getKeys("item:*");
+		List<Item> itemList=new ArrayList<>();
+		for(Serializable key : itemKeys) {
+			Item item=(Item)redisUtils.read((String)key);
+			itemList.add(item);
+		}
+		return itemList;
 	}
 }

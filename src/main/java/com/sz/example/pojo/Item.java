@@ -1,5 +1,6 @@
 package com.sz.example.pojo;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 import javax.persistence.Column;
@@ -10,7 +11,10 @@ import javax.persistence.Transient;
 
 @Table(name="item")
 @Entity
-public class Item {
+public class Item implements Serializable {
+	
+	private static final long serialVersionUID = 1L;
+
 	@Id
     private String id;
 
