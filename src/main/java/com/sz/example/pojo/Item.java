@@ -13,6 +13,7 @@ import javax.persistence.Transient;
 @Entity
 public class Item implements Serializable {
 	
+	@Transient
 	private static final long serialVersionUID = 1L;
 
 	@Id

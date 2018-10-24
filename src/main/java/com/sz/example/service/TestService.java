@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.sz.common.dao.BaseDao;
+import com.sz.common.exception.MyRuntimeException;
 import com.sz.common.test.Goods;
 import com.sz.common.test.GoodsDB;
 import com.sz.common.util.CommonUtils;
@@ -167,6 +168,12 @@ public class TestService {
 		}catch(Exception ex){
 			ex.printStackTrace();
 		}
+	}
+	
+	
+	public void testIndex() {
+		System.out.println("######执行了testIndex######");
+		throw new MyRuntimeException("自定义异常 哈哈哈哈");
 	}
 
 }
