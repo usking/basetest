@@ -86,7 +86,7 @@ public class HibernateBaseDao {
 	
 	public List queryListByHql(String hql,List<Object> params){
 		Query query=getSession().createQuery(hql);
-		if(params!=null){
+		if(params!=null && params.size()>0){
 			for(int i=0;i<params.size();i++){
 				query.setParameter(i, params.get(i));
 			}
@@ -97,7 +97,7 @@ public class HibernateBaseDao {
 	
 	public List queryListByHql(String hql,Map<String,Object> params){
 		Query query=getSession().createQuery(hql);
-		if(params!=null){
+		if(params!=null && params.size()>0){
 			for(Map.Entry<String, Object> entry : params.entrySet()){
 				query.setParameter(entry.getKey(), entry.getValue());
 			}
@@ -110,7 +110,7 @@ public class HibernateBaseDao {
 	public List<Map<String,Object>> queryListBySql(String sql,List<Object> params){
 		Query query=getSession().createSQLQuery(sql);
 		query.setResultTransformer(CriteriaSpecification.ALIAS_TO_ENTITY_MAP);
-		if(params!=null){
+		if(params!=null && params.size()>0){
 			for(int i=0;i<params.size();i++){
 				query.setParameter(i, params.get(i));
 			}
@@ -124,7 +124,7 @@ public class HibernateBaseDao {
 		Query query=getSession().createSQLQuery(sql);
 //		query.setResultTransformer(new ColumnToBean(clazz));
 		query.setResultTransformer(Transformers.aliasToBean(clazz));
-		if(params!=null){
+		if(params!=null && params.size()>0){
 			for(int i=0;i<params.size();i++){
 				query.setParameter(i, params.get(i));
 			}
@@ -157,7 +157,7 @@ public class HibernateBaseDao {
 	
 	public int countBySql(String sql,List<Object> params){
 		Query query=getSession().createSQLQuery(sql);
-		if(params!=null){
+		if(params!=null && params.size()>0){
 			for(int i=0;i<params.size();i++){
 				query.setParameter(i, params.get(i));
 			}
@@ -167,7 +167,7 @@ public class HibernateBaseDao {
 	
 	public Object queryObjectByHql(String hql,List<Object> params){
 		Query query=getSession().createQuery(hql);
-		if(params!=null){
+		if(params!=null && params.size()>0){
 			for(int i=0;i<params.size();i++){
 				query.setParameter(i, params.get(i));
 			}
@@ -177,7 +177,7 @@ public class HibernateBaseDao {
 	
 	public int executeHql(String hql,List<Object> params){
 		Query query=getSession().createQuery(hql);
-		if(params!=null){
+		if(params!=null && params.size()>0){
 			for(int i=0;i<params.size();i++){
 				query.setParameter(i, params.get(i));
 			}
@@ -187,12 +187,103 @@ public class HibernateBaseDao {
 	
 	public int executeSql(String sql,List<Object> params){
 		Query query=getSession().createSQLQuery(sql);
-		if(params!=null){
+		if(params!=null && params.size()>0){
 			for(int i=0;i<params.size();i++){
 				query.setParameter(i, params.get(i));
 			}
 		}
 		return query.executeUpdate();
+	}
+	
+	
+	
+	
+
+	public <T> List<T> queryListBySql(String sql,Class<T> clazz,Map<String,Object> params){
+		return this.queryListSql(sql, null, null, clazz, params);
+	}
+	
+	public List<Map<String,Object>> queryListBySql(String sql,Map<String,Object> params){
+		return this.queryListSql(sql, null, null, params);
+	}
+	
+	public <T> PageModel queryPageBySql(String sql,String countSql,int pageNo,int pageSize,Class<T> clazz,Map<String,Object> params){
+		int maxPageSize=this.countBySql(countSql, params);
+		List<T> list=this.queryListSql(sql, pageNo, pageSize, clazz, params);
+		return PageUtils.doPage(pageNo, pageSize, maxPageSize, list);
+	}
+	
+	
+	public PageModel queryPageBySql(String sql,String countSql,int pageNo,int pageSize,Map<String,Object> params){
+		int maxPageSize=this.countBySql(countSql, params);
+		List<Map<String,Object>> list=this.queryListSql(sql, pageNo, pageSize, params);
+		return PageUtils.doPage(pageNo, pageSize, maxPageSize, list);
+	}
+	
+	
+	public int countBySql(String sql,Map<String,Object> params){
+		Query query=getSession().createSQLQuery(sql);
+		if(params!=null && params.size()>0){
+			for(Map.Entry<String, Object> entry : params.entrySet()){
+				query.setParameter(entry.getKey(), entry.getValue());
+			}
+		}
+		return ((BigInteger)query.uniqueResult()).intValue();
+	}
+	
+	
+	public Object queryObjectBySql(String sql,Map<String,Object> params) {
+		Query query=getSession().createSQLQuery(sql);
+		if(params!=null && params.size()>0){
+			for(Map.Entry<String, Object> entry : params.entrySet()){
+				query.setParameter(entry.getKey(), entry.getValue());
+			}
+		}
+		return query.uniqueResult();
+	}
+	
+	
+	public int executeSql(String sql,Map<String,Object> params){
+		Query query=getSession().createSQLQuery(sql);
+		if(params!=null && params.size()>0){
+			for(Map.Entry<String, Object> entry : params.entrySet()){
+				query.setParameter(entry.getKey(), entry.getValue());
+			}
+		}
+		return query.executeUpdate();
+	}
+	
+	private <T> List<T> queryListSql(String sql,Integer pageNo,Integer pageSize,Class<T> clazz,Map<String,Object> params){
+		Query query=getSession().createSQLQuery(sql);
+		query.setResultTransformer(Transformers.aliasToBean(clazz));
+		
+		if(params!=null && params.size()>0){
+			for(Map.Entry<String, Object> entry : params.entrySet()){
+				query.setParameter(entry.getKey(), entry.getValue());
+			}
+		}
+		if(pageNo!=null && pageSize!=null){
+			query.setFirstResult((pageNo-1)*pageSize);
+			query.setMaxResults(pageSize);
+		}
+		List<T> list=query.list();
+		return list;
+	}
+	
+	private List<Map<String, Object>> queryListSql(String sql,Integer pageNo,Integer pageSize,Map<String,Object> params){
+		Query query=getSession().createSQLQuery(sql);
+		query.setResultTransformer(CriteriaSpecification.ALIAS_TO_ENTITY_MAP);
+		if(params!=null && params.size()>0){
+			for(Map.Entry<String, Object> entry : params.entrySet()){
+				query.setParameter(entry.getKey(), entry.getValue());
+			}
+		}
+		if(pageNo!=null && pageSize!=null){
+			query.setFirstResult((pageNo-1)*pageSize);
+			query.setMaxResults(pageSize);
+		}
+		List<Map<String, Object>> list=query.list();
+		return list;
 	}
 }
 

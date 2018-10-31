@@ -32,4 +32,14 @@ public class TestController extends BaseController {
 		resultVo.setData(null);
 		return resultVo;
 	}
+	
+	@RequestMapping("/nocheck/t")
+	@ResponseBody
+	public void test() {
+		try {
+			testService.testHibernate04();
+		}catch(Exception ex) {
+			ex.printStackTrace();
+		}
+	}
 }

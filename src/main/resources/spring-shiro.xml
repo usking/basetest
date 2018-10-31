@@ -87,6 +87,7 @@
 	             /error/**=anon
 	             /login=authc
 	             /static/**=anon
+	             /test/nocheck/**=anon
 	             /**=authc
 	        </value>  
 	    </property>

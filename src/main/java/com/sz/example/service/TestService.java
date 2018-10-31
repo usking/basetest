@@ -99,6 +99,19 @@ public class TestService {
 		this.printItem(list);
 	}
 	
+	public void testHibernate04() {
+		String sql="select id,title as str1,memo,money from item where 1=1";
+		sql+=" and title like :title ";
+		String countSql="select count(*) from("+sql+") t";
+		Map<String,Object> params=new HashMap<>();
+		params.put("title", "%的%");
+//		List<Item> itemList=baseDao.getHibernateDao().queryListBySql(sql, Item.class, params);
+//		List<Map<String,Object>> list=baseDao.getHibernateDao().queryListBySql(sql, params);
+//		PageModel page=baseDao.getHibernateDao().queryPageBySql(sql, countSql, 1, 10, params);
+		PageModel page=baseDao.getHibernateDao().queryPageBySql(sql, countSql, 1, 10,Item.class, params);
+		this.printItem(page.getList());
+	}
+	
 	private Item newItem(){
 		Item item=new Item();
 		item.setId(CommonUtils.getUUID());
@@ -143,18 +156,27 @@ public class TestService {
 	}
 	
 	private void printItem(Item item){
-		System.out.println(item.getId()+"|"+item.getTitle()+"|"+item.getMemo()+"|"+item.getMoney()+"|"+item.getStr1());
+		System.out.println("Item实体######"+item.getId()+"|"+item.getTitle()+"|"+item.getMemo()+"|"+item.getMoney()+"|"+item.getStr1());
 	}
 	private void printItem(List<Item> itemList){
 		for(Item item : itemList){
-			//System.out.println(item.getId()+"|"+item.getTitle()+"|"+item.getMemo()+"|"+item.getMoney());
 			printItem(item);
+		}
+	}
+	
+	private void printItemMap(Map<String,Object> map) {
+		System.out.println("ItemMap######"+map.get("id")+"|"+map.get("title")+"|"+map.get("memo")+"|"+map.get("money")+"|"+map.get("str1"));
+	}
+	
+	private void printItemMap(List<Map<String,Object>> list) {
+		for(Map<String,Object> map : list) {
+			printItemMap(map);
 		}
 	}
 
 	public static void main(String[] args) {
 		try{
-			ApplicationContext context=new ClassPathXmlApplicationContext(new String[]{"spring.xml"});
+			ApplicationContext context=new ClassPathXmlApplicationContext(new String[]{"spring.xml","spring-redis.xml"});
 			TestService s=(TestService)context.getBean("testService");
 			//s.testSpring01();
 			//s.testMybatis01();
@@ -162,8 +184,9 @@ public class TestService {
 			//s.testExecuteSql1();
 			//s.testExecuteSql2();
 			//s.testExecuteSql3();
-			s.testHibernate02();
+			//s.testHibernate02();
 			//s.testHibernate03();
+			s.testHibernate04();
 			System.out.println("main方法执行完成");
 		}catch(Exception ex){
 			ex.printStackTrace();
