@@ -6,7 +6,7 @@
   <packaging>war</packaging>
   
   <properties>
-  	<spring.version>4.2.8.RELEASE</spring.version>
+  	<spring.version>4.3.20.RELEASE</spring.version>
   </properties>
   
   <dependencyManagement>
@@ -27,9 +27,10 @@
 	  <artifactId>servlet-api</artifactId>
 	  <version>2.5</version>
 	</dependency>
+  
 	<dependency>
         <groupId>org.springframework</groupId>
-        <artifactId>spring-context</artifactId>
+        <artifactId>spring-aop</artifactId>
     </dependency>
     <dependency>
         <groupId>org.springframework</groupId>
@@ -37,7 +38,23 @@
     </dependency>
     <dependency>
         <groupId>org.springframework</groupId>
+        <artifactId>spring-beans</artifactId>
+    </dependency>
+	<dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-context</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework</groupId>
         <artifactId>spring-context-support</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-core</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-expression</artifactId>
     </dependency>
     <dependency>
         <groupId>org.springframework</groupId>
@@ -57,11 +74,23 @@
     </dependency>
     <dependency>
         <groupId>org.springframework</groupId>
+        <artifactId>spring-messaging</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework</groupId>
         <artifactId>spring-orm</artifactId>
     </dependency>
     <dependency>
         <groupId>org.springframework</groupId>
         <artifactId>spring-oxm</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-test</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-tx</artifactId>
     </dependency>
     <dependency>
         <groupId>org.springframework</groupId>
@@ -126,10 +155,11 @@
 	  <version>2.4.2</version>
 	</dependency>
 	<dependency>
-	  <groupId>com.alibaba</groupId>
-	  <artifactId>fastjson</artifactId>
-	  <version>1.2.8</version>
+	  <groupId>commons-httpclient</groupId>
+	  <artifactId>commons-httpclient</artifactId>
+	  <version>3.1</version>
 	</dependency>
+	
 	<dependency>
 	  <groupId>com.fasterxml.jackson.core</groupId>
 	  <artifactId>jackson-annotations</artifactId>
@@ -160,11 +190,7 @@
         <artifactId>mysql-connector-java</artifactId>
         <version>5.1.36</version>
     </dependency>
-    <dependency>
-	  <groupId>commons-httpclient</groupId>
-	  <artifactId>commons-httpclient</artifactId>
-	  <version>3.1</version>
-	</dependency>
+    
 	<dependency>
 	  <groupId>dom4j</groupId>
 	  <artifactId>dom4j</artifactId>
@@ -175,6 +201,11 @@
 	    <artifactId>json-lib</artifactId>
 	    <version>2.4</version>
 	    <classifier>jdk15</classifier>
+	</dependency>
+	<dependency>
+	  <groupId>com.alibaba</groupId>
+	  <artifactId>fastjson</artifactId>
+	  <version>1.2.8</version>
 	</dependency>
 	<dependency>
 		<groupId>com.alibaba</groupId>

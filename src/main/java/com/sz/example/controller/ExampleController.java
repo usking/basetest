@@ -33,6 +33,7 @@ import com.sz.common.csrf.CsrfAnnotation;
 import com.sz.common.datatables.DataTables;
 import com.sz.common.datatables.DataTablesParameter;
 import com.sz.common.job.ExampleJob;
+import com.sz.common.logger.LoggerDoc;
 import com.sz.common.util.CommonUtils;
 import com.sz.common.util.PageModel;
 import com.sz.common.util.QuartzManager;
@@ -147,6 +148,7 @@ public class ExampleController extends BaseController {
 	@CsrfAnnotation
 	@RequestMapping(value="/item/merge",method=RequestMethod.POST)
 	@ResponseBody
+	@LoggerDoc("新增或修改item-Controller")
 	public String mergeItem(Item item){
 		String result="";
 		try{

@@ -65,7 +65,7 @@ public class ExampleService {
 		return item;
 	}
 	
-	@LoggerDoc("新增或修改item")
+	@LoggerDoc("新增或修改item-Service")
 	public void mergeItem(Item item) throws Exception{
 		String id=item.getId();
 		if(StringUtils.isBlank(id)){//新增

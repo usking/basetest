@@ -54,7 +54,7 @@ public class LoggerAop {
     /**
      * 记录业务日志
      */
-    @After(value="execution(* com.sz..*(..))")
+    @After(value="execution(* com.sz.*.service..*(..)) || execution(* com.sz.*.controller..*(..))")
     public void saveLog(JoinPoint joinpoint) throws Exception {
         String methodName = joinpoint.getSignature().getName();//方法名
         Object target=joinpoint.getTarget();//拦截的实体类

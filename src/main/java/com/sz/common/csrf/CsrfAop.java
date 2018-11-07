@@ -41,7 +41,7 @@ public class CsrfAop {
      *     每次提交表单时需要此属性来验证 
      * </script></pre>
      */
-    @Before(value="execution(* com.sz..*(..))")
+    @Before(value="execution(* com.sz.*.controller..*(..))")
     public void validCsrf(JoinPoint joinpoint) throws Exception {
         String methodName = joinpoint.getSignature().getName();//方法名
         Object target=joinpoint.getTarget();//拦截的实体类
