@@ -2,6 +2,11 @@ package com.sz.common.dao.hibernate;
 
 import java.io.Serializable;
 import java.math.BigInteger;
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Types;
 import java.util.List;
 import java.util.Map;
 
@@ -15,6 +20,7 @@ import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.Example;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
+import org.hibernate.jdbc.ReturningWork;
 import org.hibernate.transform.Transformers;
 import org.springframework.stereotype.Repository;
 
@@ -284,6 +290,26 @@ public class HibernateBaseDao {
 		}
 		List<Map<String, Object>> list=query.list();
 		return list;
+	}
+	
+	public Object callOutProc(final int outTypes,final String procSql,final List<Object> params) {
+		Object obj=getSession().doReturningWork(new ReturningWork<Object>() {
+			@Override
+			public Object execute(Connection connection) throws SQLException {
+				CallableStatement callableStatement=connection.prepareCall(procSql);
+				callableStatement.registerOutParameter(1, outTypes);
+				for(int i=0;i<params.size();i++) {
+					callableStatement.setObject(i+2, params.get(i));
+				}
+				callableStatement.executeUpdate();
+				Object obj=callableStatement.getObject(1);
+				if(callableStatement!=null) {
+					callableStatement.close();
+				}
+				return obj;
+			}
+		});
+		return obj;
 	}
 }
 

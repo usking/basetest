@@ -1,6 +1,7 @@
 package com.sz.example.service;
 
 import java.math.BigDecimal;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -186,7 +187,9 @@ public class TestService {
 			//s.testExecuteSql3();
 			//s.testHibernate02();
 			//s.testHibernate03();
-			s.testHibernate04();
+			//s.testHibernate04();
+			//s.callProc1();
+			s.callProc2();
 			System.out.println("main方法执行完成");
 		}catch(Exception ex){
 			ex.printStackTrace();
@@ -197,6 +200,46 @@ public class TestService {
 	public void testIndex() {
 		System.out.println("######执行了testIndex######");
 		throw new MyRuntimeException("自定义异常 哈哈哈哈");
+	}
+	
+	public void callProc1() {
+		/***
+		CREATE DEFINER=`root`@`localhost` PROCEDURE `proc_test`(OUT out_result int,IN p_org_id int,IN p_item_id int)
+		BEGIN
+			SET out_result=100;
+		END
+		***/
+		
+		String sql="{call proc_test(?,?,?)}";
+		List<Object> params=new ArrayList<>();
+		params.add(2);
+		params.add(3);
+		Object obj=baseDao.getHibernateDao().callOutProc(Types.INTEGER, sql, params);
+		System.out.println(obj);
+	}
+	
+	public void callProc2() {
+		/***
+		CREATE DEFINER=`root`@`localhost` PROCEDURE `proc_test`(IN p_org_id int,IN p_item_id int)
+		BEGIN
+			DECLARE out_result int;
+			SET out_result=100;
+			select out_result;
+		END
+		***/
+		
+		String sql="{call proc_test(?,?)}";
+		List<Object> params=new ArrayList<>();
+		params.add(2);
+		params.add(3);
+		
+		List<Map<String, Object>> list=baseDao.getHibernateDao().queryListBySql(sql, params);
+		if(list!=null && list.size()>0) {
+			Map<String,Object> map=list.get(0);
+			Integer rs=(Integer)map.get("out_result");
+			System.out.println(rs);
+		}
+		
 	}
 
 }
