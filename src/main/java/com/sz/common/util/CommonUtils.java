@@ -494,6 +494,20 @@ public class CommonUtils {
         return true;
     }
     
+    /**
+     * 判断是否为空
+     * <pre>
+     * StringUtils.isEmpty(null)      = true
+     * StringUtils.isEmpty("")        = true
+     * StringUtils.isEmpty(" ")       = false
+     * StringUtils.isEmpty("bob")     = false
+     * StringUtils.isEmpty("  bob  ") = false
+     * </pre>
+     */
+    public static boolean isEmpty(final CharSequence cs) {
+        return cs == null || cs.length() == 0;
+    }
+    
     public static String sendHttpPost(String url,Map<String,Object> param) throws HttpException, IOException{
     	HttpClient client = new HttpClient();
 		PostMethod post = new PostMethod(url);
@@ -571,6 +585,17 @@ public class CommonUtils {
     		ex.printStackTrace();
     	}
     	return obj;
+    }
+    
+    /**
+     * 取得最小值和最大值之间的随机整数
+     * @param min
+     * @param max
+     * @return
+     */
+    public static int getRandomInteger(int min,int max) {
+    	Random rand=new Random();
+		return rand.nextInt(max-min+1)+min;
     }
 
     public static void main(String[] args) {
