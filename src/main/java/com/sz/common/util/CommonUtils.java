@@ -597,6 +597,21 @@ public class CommonUtils {
     	Random rand=new Random();
 		return rand.nextInt(max-min+1)+min;
     }
+    
+    public static long getRandomID() {
+    	int size=18;
+    	String uuid=UUID.randomUUID().toString();
+		int hashCodeVal=uuid.hashCode();
+		if(hashCodeVal<0) {
+			hashCodeVal=-hashCodeVal;
+		}
+		String str=String.valueOf(hashCodeVal);
+		if(str.length()<size) {
+			String randomStr=getRandomStr(size-str.length(),3);
+			str=str+randomStr;
+		}
+		return Long.parseLong(str);
+    }
 
     public static void main(String[] args) {
         try {
