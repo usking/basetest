@@ -28,6 +28,7 @@
 	<import resource="spring-jdbc.xml"/>
 	<import resource="spring-shiro.xml"/>
 	<import resource="spring-redis.xml"/>
+	<import resource="spring-solr.xml"/>
 	<!--
 	<import resource="spring-rabbitmq.xml"/>
 	-->

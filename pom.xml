@@ -325,6 +325,13 @@
 	    <version>1.7.4.RELEASE</version>
 	</dependency>
 	
+	<!-- solr -->
+	<dependency>
+	  <groupId>org.apache.solr</groupId>
+	  <artifactId>solr-solrj</artifactId>
+	  <version>6.6.5</version>
+	</dependency>
+	
   
   </dependencies>
   
