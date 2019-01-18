@@ -132,6 +132,19 @@ public class CommonUtils {
         formater.setGroupingUsed(false);
         return formater.format(num);
     }
+    
+    /**
+     * 格式化数字 自动省去末尾0
+     * @param str
+     * @param value 保留的小数位
+     * @return
+     */
+    public static String numberFormat(Object str, int value) {
+        NumberFormat formater = DecimalFormat.getInstance();
+        formater.setMaximumFractionDigits(value);
+        formater.setGroupingUsed(false);
+        return formater.format(str);
+    }
 
     /**
      * 格式化数字
