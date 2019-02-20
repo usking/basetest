@@ -6,12 +6,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.sz.common.aop.TestAnnotation;
 import com.sz.common.controller.BaseController;
 import com.sz.common.vo.ResultVo;
 import com.sz.example.service.TestService;
 
 @Controller
 @RequestMapping("/test")
+@TestAnnotation(value="abc123456")
 public class TestController extends BaseController {
 	@Resource
 	private TestService testService;
@@ -41,5 +43,13 @@ public class TestController extends BaseController {
 		}catch(Exception ex) {
 			ex.printStackTrace();
 		}
+	}
+	
+	@RequestMapping("/test2")
+	@ResponseBody
+	@TestAnnotation(value="666",name="777")
+	public String test2() {
+		System.out.println("执行了test2");
+		return "success";
 	}
 }
