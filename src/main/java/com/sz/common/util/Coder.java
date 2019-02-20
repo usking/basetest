@@ -168,7 +168,7 @@ public class Coder {
     
     public static String decodeBASE64(String str) throws Exception{
     	byte[] data=Coder.decryptBASE64(str);
-    	return new String(data);
+    	return new String(data,CHAR_SET);
     }
     
     public static String encodeBASE64(String str) throws Exception{
