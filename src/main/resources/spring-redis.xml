@@ -25,6 +25,7 @@
         <property name="hostName" value="${redis.host}"></property>
         <property name="port" value="${redis.port}"></property>
         <property name="poolConfig" ref="redisPoolConfig"></property>
+        <property name="database" value="${redis.database}"></property>
     </bean>  
       
     <bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate">  
