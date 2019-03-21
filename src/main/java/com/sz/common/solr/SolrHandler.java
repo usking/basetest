@@ -104,8 +104,10 @@ public class SolrHandler {
 	
 	public long searchTotalCount(String searchStr) throws Exception{
 	    SolrQuery query = new SolrQuery();
-        String sql="title:"+searchStr+" OR contents:"+searchStr+" OR time:"+searchStr;
-        if(StringUtils.isBlank(searchStr)) sql="*:*";
+        String sql="title:"+searchStr+" OR content:"+searchStr;
+        if(StringUtils.isBlank(searchStr)) {
+        	sql="*:*";
+        }
         query.setQuery(sql);
         QueryResponse res = httpSolrClient.query(query);
         return res.getResults().getNumFound();
@@ -138,10 +140,12 @@ public class SolrHandler {
 			ApplicationContext context=new ClassPathXmlApplicationContext(new String[]{"spring.xml"});
 			SolrHandler solrHandler=context.getBean("solrHandler", SolrHandler.class);
 //			solrHandler.createIndex();
-			List<IndexEntity> list=solrHandler.search("*1*",1,10);
-			for(IndexEntity t : list) {
-				System.out.println(t.getId()+"|"+t.getTitle()+"|"+t.getContent());
-			}
+//			List<IndexEntity> list=solrHandler.search("*1*",1,10);
+//			for(IndexEntity t : list) {
+//				System.out.println(t.getId()+"|"+t.getTitle()+"|"+t.getContent());
+//			}
+			long count=solrHandler.searchTotalCount(null);
+			System.out.println(count);
 		}catch(Exception ex) {
 			ex.printStackTrace();
 		}
