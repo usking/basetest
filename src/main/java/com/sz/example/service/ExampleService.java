@@ -1,6 +1,9 @@
 package com.sz.example.service;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -20,6 +23,7 @@ import com.sz.common.datatables.DataTables;
 import com.sz.common.datatables.DataTablesParameter;
 import com.sz.common.logger.LoggerDoc;
 import com.sz.common.util.CommonUtils;
+import com.sz.common.util.ExcelUtils;
 import com.sz.common.util.PageModel;
 import com.sz.example.dao.mapper.ItemMapper;
 import com.sz.example.dao.mapper.ItemTKMapper;
@@ -87,6 +91,39 @@ public class ExampleService {
 		messageBean.setMessage(message);
 		messageBean.setTime(CommonUtils.dateFormat(new Date(), null));
 		systemWebSocketHandler.sendMessage(messageBean);
+	}
+	
+	
+	public String readExcel(InputStream inputStream) throws IOException {
+		StringBuffer sb=new StringBuffer();
+		String[][] excel=ExcelUtils.readExcel(inputStream, 0, 0, 0);
+		for(int i=0;i<excel.length;i++) {
+			String col1=excel[i][0];
+			String col2=excel[i][1];
+			String col3=excel[i][2];
+			String col4=excel[i][3];
+			String row=col1+"|"+col2+"|"+col3+"|"+col4;
+			sb.append(row+"<br />");
+			System.out.println(row);
+		}
+		return sb.toString();
+	}
+	
+	public void writeExcel(OutputStream out) throws IOException {
+		String sheetTitle="测试sheet";
+		String[] headers= {"标题a","标题b","标题c","我是标题"};
+		
+		List<String> columnList=new ArrayList<>();
+		columnList.add("数据1a");
+		columnList.add("35");
+		columnList.add("66.8");
+		columnList.add("2018-01-30");
+		
+		List<List<String>> rowList=new ArrayList<>();
+		for(int i=0;i<5;i++) {
+			rowList.add(columnList);
+		}
+		ExcelUtils.writeExcel(out, sheetTitle, headers, rowList);
 	}
 
 	public static void main(String[] args) {

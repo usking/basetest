@@ -39,6 +39,7 @@ import com.sz.common.util.PageModel;
 import com.sz.common.util.QuartzManager;
 import com.sz.common.util.RedisUtils;
 import com.sz.common.util.StringEscapeEditor;
+import com.sz.common.vo.Result;
 import com.sz.example.pojo.Idpid;
 import com.sz.example.pojo.Item;
 import com.sz.example.service.ExampleService;
@@ -340,5 +341,32 @@ public class ExampleController extends BaseController {
 			itemList.add(item);
 		}
 		return itemList;
+	}
+	
+	/////////////////////////////////////////////
+	
+	@RequestMapping(value="/excelIndex")
+	public String excelIndex(HttpServletRequest request) {
+		return this.getJspPath("file/excel");
+	}
+	
+	@RequestMapping(value="/readExcel")
+	@ResponseBody
+	public Result readExcel(HttpServletRequest request,MultipartFile file) {
+		try {
+			String excelStr=exampleService.readExcel(file.getInputStream());
+			return Result.success(excelStr);
+		}catch(Exception ex) {
+			ex.printStackTrace();
+			return Result.response("500", ex.getMessage(), null);
+		}
+	}
+	
+	@RequestMapping(value="/writeExcel")
+	public void writeExcel(HttpServletResponse response) throws IOException {
+		String fileName="测试excel.xls";
+		response.setContentType("application/x-download");
+		response.setHeader("Content-disposition", "attachment; filename="+ new String(fileName.getBytes("GBK"),"ISO8859-1"));
+		exampleService.writeExcel(response.getOutputStream());
 	}
 }
