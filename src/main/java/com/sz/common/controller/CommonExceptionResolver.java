@@ -6,6 +6,7 @@ import java.io.PrintWriter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.shiro.authz.UnauthorizedException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ModelAndView;
@@ -27,7 +28,12 @@ public class CommonExceptionResolver implements HandlerExceptionResolver {
 			out.flush();
 			out.close();
 		}else {
-			return new ModelAndView("/WEB-INF/views/error/500");
+			if(ex instanceof UnauthorizedException) {
+				return new ModelAndView("/WEB-INF/views/error/403");
+			}else {
+				return new ModelAndView("/WEB-INF/views/error/500");
+			}
+			
 		}
 		return null;
 	}
