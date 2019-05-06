@@ -33,9 +33,8 @@ public class ExcelUtils {
         HSSFWorkbook wb = new HSSFWorkbook(is);
         HSSFSheet childSheet = wb.getSheetAt(sheetNum);
         int rows = childSheet.getLastRowNum();
-        if(childSheet.getRow(startRowNum)==null)
-        {
-        	return  new String[0][0];
+        if(childSheet.getRow(startRowNum)==null){
+        	return new String[0][0];
         }
         int cols = childSheet.getRow(startRowNum).getLastCellNum();
         int tempRows = rows + 1 - startRowNum;
@@ -47,7 +46,11 @@ public class ExcelUtils {
             int tempColNum = startColNum;
             for (int j = 0; j < tempCols; j++) {
                 String str = "";
-                HSSFCell cell = childSheet.getRow(tempRowNum).getCell(tempColNum);
+                HSSFCell cell=null;
+                HSSFRow row=childSheet.getRow(tempRowNum);
+                if(row!=null) {
+                	cell = row.getCell(tempColNum);
+                }
                 if (cell != null) {
                     int cellType = cell.getCellType();
                     if (cellType == Cell.CELL_TYPE_STRING) {

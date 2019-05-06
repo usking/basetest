@@ -24,7 +24,7 @@ function upload(){
         done: function (e, data) {
         	if(data.result.code=="200"){
         		var str=data.result.data;
-                $("#content").append(str);
+                $("#content").html(str);
         	}else{
         		layer.alert(data.result.message);
         	}
