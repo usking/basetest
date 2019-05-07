@@ -4,6 +4,7 @@ import java.beans.BeanInfo;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.io.BufferedInputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,8 +24,11 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 import java.util.Random;
 import java.util.UUID;
 
@@ -625,6 +629,24 @@ public class CommonUtils {
 		}
 		return Long.parseLong(str);
     }
+    
+    public static void doZip(OutputStream outputStream,String folderName,List<File> files) throws IOException {
+		if(folderName==null) {
+			folderName="";
+		}
+		ZipOutputStream zipOutputStream = new ZipOutputStream(outputStream);
+		byte[] buf = new byte[2048];
+		int len;
+		for(File file : files) {
+			zipOutputStream.putNextEntry(new ZipEntry(folderName+"/"+file.getName()));
+			BufferedInputStream bufferedInputStream=new BufferedInputStream(new FileInputStream(file));
+			while ((len = bufferedInputStream.read(buf)) > 0) {
+				zipOutputStream.write(buf, 0, len);
+			}
+			bufferedInputStream.close();
+		}
+		zipOutputStream.close();
+	}
 
     public static void main(String[] args) {
         try {
