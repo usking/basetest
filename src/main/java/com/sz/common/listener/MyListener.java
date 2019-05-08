@@ -1,9 +1,13 @@
 package com.sz.common.listener;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
@@ -27,6 +31,21 @@ public class MyListener implements ServletContextListener {
 		
 //		this.addJob(exampleService);
 		
+		try {
+			ServletContext servletContext=servletContextEvent.getServletContext();
+			InputStream inputStream=servletContext.getResourceAsStream("/json/static.json");
+			StringBuffer sb=new StringBuffer();
+			BufferedReader br=new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
+			String temp=br.readLine();
+			while(temp!=null){
+				sb.append(temp);
+				temp=br.readLine();
+			}
+			br.close();
+			System.out.println(sb.toString());
+		}catch(Exception ex) {
+			ex.printStackTrace();
+		}
 	}
 	
 	/**

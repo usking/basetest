@@ -1,5 +1,9 @@
 package com.sz.example.service;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.sql.Types;
 import java.util.ArrayList;
@@ -8,12 +12,14 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.ServletContext;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.ContextLoader;
 
 import com.sz.common.dao.BaseDao;
 import com.sz.common.exception.MyRuntimeException;
@@ -240,6 +246,22 @@ public class TestService {
 			System.out.println(rs);
 		}
 		
+	}
+	
+	
+	public void getJson() throws IOException {
+		ServletContext servletContext=ContextLoader.getCurrentWebApplicationContext().getServletContext();
+		InputStream inputStream=servletContext.getResourceAsStream("/json/static.json");
+		StringBuffer sb=new StringBuffer();
+		BufferedReader br=new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
+		String temp=br.readLine();
+		while(temp!=null){
+			sb.append(temp);
+			temp=br.readLine();
+		}
+		br.close();
+		
+		System.out.println(sb.toString());
 	}
 
 }

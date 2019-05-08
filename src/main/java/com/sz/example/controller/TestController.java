@@ -52,4 +52,15 @@ public class TestController extends BaseController {
 		System.out.println("执行了test2");
 		return "success";
 	}
+	
+	@RequestMapping("/nocheck/testJson")
+	@ResponseBody
+	public String testJson() {
+		try {
+			testService.getJson();
+		}catch(Exception ex) {
+			ex.printStackTrace();
+		}
+		return "end";
+	}
 }
