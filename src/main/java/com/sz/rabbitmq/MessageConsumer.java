@@ -1,16 +1,17 @@
 package com.sz.rabbitmq;
 
 import java.util.Date;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
 import org.springframework.amqp.AmqpException;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.amqp.core.Message;
-import org.springframework.amqp.core.MessageListener;
 import org.springframework.amqp.core.MessagePostProcessor;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.data.redis.core.RedisTemplate;
 
 /**
  * 下载erlang 并配置环境变量
@@ -114,5 +115,20 @@ public class MessageConsumer {
 //		s.sendMsg2();
 //		s.sendMsg3();
 		System.out.println("main执行结束");
+	}
+	
+	
+	@Resource(name="redisTemplate2")
+	private RedisTemplate<String, String> redisTemplate;
+	
+	/**
+	 * 测试队列
+	 */
+	public void doQueue5(Map<String,Object> map) {
+		Integer index=(Integer)map.get("index");
+		String key="test:count";
+		String count=redisTemplate.opsForValue().get(key);
+		System.out.println(index+"::"+count);
+		redisTemplate.opsForValue().increment(key, -1);
 	}
 }

@@ -90,5 +90,18 @@
 	
 
 
+
+
+	<rabbit:queue id="queue5" name="queue5" />
+	<rabbit:direct-exchange id="exchange5" name="exchange5" delayed="true">
+        <rabbit:bindings>
+            <rabbit:binding queue="queue5" key="queue5Key"></rabbit:binding>
+        </rabbit:bindings>
+    </rabbit:direct-exchange>
+    
+    <rabbit:listener-container connection-factory="connectionFactory" message-converter="jsonMessageConverter">
+        <rabbit:listener queues="queue5" ref="messageConsumer" method="doQueue5" />
+    </rabbit:listener-container>
+
 	
 </beans>
