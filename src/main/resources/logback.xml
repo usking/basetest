@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="false" scan="true">  
+  
+    <!-- 文件输出格式 -->  
+    <property name="PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%-5level] [%thread] %c [%L] - %msg%n" />  
+    <!-- 文件路径 -->  
+    <property name="FILE_PATH" value="E:/logs" />
+    
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">  
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">  
+            <pattern>${PATTERN}</pattern>  
+        </encoder>
+    </appender>
+    
+    <!--
+	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+			<fileNamePattern>${FILE_PATH}/sys.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+			<maxFileSize>50MB</maxFileSize>
+     	</rollingPolicy>
+     
+     	<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+         	<pattern>${PATTERN}</pattern>  
+     	</encoder>
+	</appender>
+
+	<appender name="FILE_ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+	    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${FILE_PATH}/sys.error.%d{yyyy-MM-dd}.log</fileNamePattern>
+		</rollingPolicy>
+	
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+		    <pattern>${PATTERN}</pattern>
+		</encoder>
+
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+	       	<level>error</level>
+	       	<onMatch>ACCEPT</onMatch>
+         	<onMismatch>DENY</onMismatch>
+        </filter>
+  	</appender>
+  	-->
+
+	<root level="debug">
+		<appender-ref ref="CONSOLE" />
+		<!--
+        <appender-ref ref="FILE" />
+        <appender-ref ref="FILE_ERROR" />
+        -->
+    </root>
+    
+</configuration>
