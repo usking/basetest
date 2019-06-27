@@ -11,7 +11,7 @@
     		<PatternLayout pattern="${PATTERN}"/>
     	</console>
     	
-    	<!---->
+    	<!--
     	<RollingFile name="RollingFileDebug" fileName="${FILE_PATH}/sys.log" filePattern="${FILE_PATH}/sys.%d{yyyy-MM-dd}.%i.log">
     		<ThresholdFilter level="debug" />
     		<PatternLayout pattern="${PATTERN}"/>
@@ -29,17 +29,17 @@
 				<SizeBasedTriggeringPolicy size="100MB"/>
 			</Policies>
     	</RollingFile>
-    	
+    	-->
     
     </appenders>
     
     <loggers>
         <root level="debug">
             <appender-ref ref="Console"/>
-            <!---->
+            <!--
             <appender-ref ref="RollingFileDebug"/>
             <appender-ref ref="RollingFileError"/>
-            
+            -->
         </root> 
     </loggers>
     
