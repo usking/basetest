@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration debug="false" scan="true">  
   
-    <!-- 文件输出格式 -->  
-    <property name="PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%-5level] [%thread] %c [%L] - %msg%n" />  
+    <!-- 文件输出格式 -->
+    <property name="PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%p] [%t] %c [%L] - %m%n" />  
     <!-- 文件路径 -->  
     <property name="FILE_PATH" value="E:/logs" />
     

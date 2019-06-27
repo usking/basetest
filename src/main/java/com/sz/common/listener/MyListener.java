@@ -12,6 +12,8 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
 import org.quartz.SchedulerException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import com.sz.common.job.ExampleJob;
@@ -19,6 +21,8 @@ import com.sz.common.util.QuartzManager;
 import com.sz.example.service.ExampleService;
 
 public class MyListener implements ServletContextListener {
+	
+	Logger logger=LoggerFactory.getLogger(getClass());
 
 	@Override
 	public void contextDestroyed(ServletContextEvent arg0) {
@@ -42,7 +46,8 @@ public class MyListener implements ServletContextListener {
 				temp=br.readLine();
 			}
 			br.close();
-			System.out.println(sb.toString());
+			//System.out.println(sb.toString());
+			logger.info(sb.toString());
 		}catch(Exception ex) {
 			ex.printStackTrace();
 		}
