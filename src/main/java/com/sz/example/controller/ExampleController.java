@@ -3,14 +3,13 @@ package com.sz.example.controller;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 import java.util.Set;
+import java.util.UUID;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -18,6 +17,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
@@ -26,7 +27,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.alibaba.fastjson.JSON;
 import com.sz.common.constant.Consts;
 import com.sz.common.controller.BaseController;
 import com.sz.common.csrf.CsrfAnnotation;
@@ -51,6 +51,8 @@ import net.sf.json.JSONObject;
 @Controller
 @RequestMapping("/exp")
 public class ExampleController extends BaseController {
+	Logger logger=LoggerFactory.getLogger(getClass());
+	
 	@Resource
 	private TestService testService;
 	@Resource
@@ -156,6 +158,7 @@ public class ExampleController extends BaseController {
 			exampleService.mergeItem(item);
 			result="200";
 		}catch(Exception ex){
+			logger.error(ex.getMessage(),ex);
 			ex.printStackTrace();
 			result="500 "+ex.getMessage();
 		}

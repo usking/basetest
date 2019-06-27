@@ -21,6 +21,7 @@ import org.springframework.web.util.HtmlUtils;
 import com.sz.common.dao.BaseDao;
 import com.sz.common.datatables.DataTables;
 import com.sz.common.datatables.DataTablesParameter;
+import com.sz.common.exception.MyRuntimeException;
 import com.sz.common.logger.LoggerDoc;
 import com.sz.common.util.CommonUtils;
 import com.sz.common.util.ExcelUtils;
@@ -78,6 +79,7 @@ public class ExampleService {
 		}else{//修改
 			baseDao.getSpringBaseDao().update(item);
 		}
+		//throw new MyRuntimeException("自定义运行的异常");
 	}
 	
 	public void deleteItem(String id){
