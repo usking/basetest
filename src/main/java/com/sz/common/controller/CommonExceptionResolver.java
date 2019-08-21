@@ -9,9 +9,13 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.shiro.authz.UnauthorizedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.alibaba.fastjson.JSONObject;
+import com.sz.common.vo.Result;
 
 @Component
 public class CommonExceptionResolver implements HandlerExceptionResolver {
@@ -24,12 +28,16 @@ public class CommonExceptionResolver implements HandlerExceptionResolver {
 		logger.error(ex.getMessage(),ex);
 		PrintWriter out=null;
 		if ("XMLHttpRequest".equalsIgnoreCase(request.getHeader("X-Requested-With"))) {// 是ajax请求
+			response.setContentType(MediaType.APPLICATION_JSON_VALUE); 
+            response.setCharacterEncoding("UTF-8");
 			try {
 				out=response.getWriter();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			out.print(ex.getMessage());
+			Result result=Result.error(ex.getMessage());
+			String resultJson=JSONObject.toJSONString(result);
+			out.write(resultJson);
 			out.flush();
 			out.close();
 		}else {

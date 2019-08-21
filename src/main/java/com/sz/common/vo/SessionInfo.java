@@ -7,6 +7,25 @@ public class SessionInfo implements Serializable {
 	private String username;
 	private String userIp;
 	private String userid;
+	
+	private String token;
+	private String deviceType;
+
+	public String getDeviceType() {
+		return deviceType;
+	}
+
+	public void setDeviceType(String deviceType) {
+		this.deviceType = deviceType;
+	}
+
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
+	}
 
 	public String getUserid() {
 		return userid;

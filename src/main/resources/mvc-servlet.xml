@@ -54,6 +54,11 @@
 	    	<mvc:mapping path="/**"/>
 	        <bean class="com.sz.common.controller.CommonHandlerInterceptor"></bean>
 	    </mvc:interceptor>
+	    
+	    <mvc:interceptor>
+	    	<mvc:mapping path="/app/**"/>
+	        <bean class="com.sz.common.controller.AppFilter"></bean>
+	    </mvc:interceptor>
 	</mvc:interceptors>
     
     <aop:aspectj-autoproxy proxy-target-class="true" />
