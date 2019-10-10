@@ -10,13 +10,19 @@
 		};
 		var options=$.extend(def,opts);
 		
+		var wsProtocol="ws:";
+		var httpProtocol=document.location.protocol;
+		if(httpProtocol=="https:"){
+			wsProtocol="wss:";
+		}
+		
 		var websocket;
 		if ('WebSocket' in window) {
-			websocket = new WebSocket("ws://" + options.wsPath + "/wsServer?userid="+options.userid);
+			websocket = new WebSocket(wsProtocol+"//" + options.wsPath + "/wsServer?userid="+options.userid);
 		} else if ('MozWebSocket' in window) {
-			websocket = new MozWebSocket("ws://" + options.wsPath + "/wsServer?userid"+options.userid);
+			websocket = new MozWebSocket(wsProtocol+"//" + options.wsPath + "/wsServer?userid"+options.userid);
 		} else {
-			websocket = new SockJS("http://" + options.wsPath + "/wsServer/sockjs?userid"+options.userid);
+			websocket = new SockJS(httpProtocol+"//" + options.wsPath + "/wsServer/sockjs?userid"+options.userid);
 		}
 		websocket.onopen = function(event) {
 			options.onopen(event);
