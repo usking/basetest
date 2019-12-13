@@ -38,6 +38,8 @@ function upload(){
                 'width',
                 progress + '%'
             ); */
+        	var progress = parseInt(data.loaded / data.total * 100, 10);
+            $("#progress").text(progress);
         },
         always:function(){
         	layer.close(layerLoad);
@@ -60,7 +62,7 @@ function upload(){
   		</div><br />
   		
   		<a href="javascript:;" class="btn btn-info" onclick="$('#file1').click()">
-  		<i class="fa fa-upload fa-lg"></i>&nbsp;上传文件</a>
+  		<i class="fa fa-upload fa-lg"></i>&nbsp;上传文件</a>&nbsp;<span id="progress"></span>
   		
   		<input type="file" id="file1" name="file" multiple="multiple" class="btn" style="display:none" />
 		    
