@@ -346,7 +346,7 @@ public class CommonUtils {
 		Map<String,String[]> paramMap=request.getParameterMap();
 		for(String key : paramMap.keySet()){
 			String[] value=paramMap.get(key);
-			if(value!=null && !"".equals(value[0])){
+			if(value!=null && value[0]!=null){
 				param.put(key, StringUtils.join(value));
 			}
 		}
