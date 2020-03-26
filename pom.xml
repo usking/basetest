@@ -378,6 +378,13 @@
         <artifactId>log4j-slf4j-impl</artifactId>
         <version>2.10.0</version>
     </dependency>
+    
+    <!-- 二维码 -->
+	<dependency>
+       	<groupId>com.google.zxing</groupId>
+       	<artifactId>core</artifactId>
+       	<version>3.3.0</version>
+   	</dependency>
 	
   
   </dependencies>
