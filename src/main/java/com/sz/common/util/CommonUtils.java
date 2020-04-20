@@ -790,16 +790,11 @@ public class CommonUtils {
 	 * @return
 	 */
 	public static String getFutureWeekOfYear(Date date, int weeks) {
-        String future = "";
-        try {
-            Calendar calendar = GregorianCalendar.getInstance();
-            calendar.setTime(date);
-            calendar.add(Calendar.WEEK_OF_YEAR, weeks);
-            date = calendar.getTime();
-            future=getWeekOfYear(date);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        Calendar calendar = GregorianCalendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.WEEK_OF_YEAR, weeks);
+        date = calendar.getTime();
+        String future=getWeekOfYear(date);
         return future;
     }
 
