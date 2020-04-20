@@ -647,6 +647,161 @@ public class CommonUtils {
 		}
 		zipOutputStream.close();
 	}
+    
+    
+    /**
+	 * 获取指定日期的星期
+	 * @param date
+	 * @return
+	 */
+	public static int getWeek(Date date) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		int week=calendar.get(Calendar.DAY_OF_WEEK)-1;
+		if(week==0) {//周日
+			week=7;
+		}
+		return week;
+	}
+	
+	/**
+	 * 获取指定日期的年和第几周
+	 * @param date
+	 * @return
+	 */
+	public static String getWeekOfYear(Date date) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setFirstDayOfWeek(Calendar.MONDAY);
+		calendar.setMinimalDaysInFirstWeek(7);
+		calendar.setTime(date);
+		int week=calendar.get(Calendar.WEEK_OF_YEAR);
+		int weekYear=calendar.get(Calendar.YEAR);
+		int weekMonth=calendar.get(Calendar.MONTH)+1;
+		if(week>40 && weekMonth==1) {//指定年的第一周如果跨年 则记为前一年的最后一周
+			weekYear-=1;
+		}
+		String str=weekYear+","+week;
+		return str;
+		
+	}
+	
+	/**
+	 * 获取指定年的第几周的开始日期
+	 * @param weekYear 年
+	 * @param weekOfYear 指定年的第几周
+	 * @return
+	 */
+	public static Date getBeginDateByWeekofYear(int weekYear,int weekOfYear) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setFirstDayOfWeek(Calendar.MONDAY);
+		calendar.setMinimalDaysInFirstWeek(7);
+		calendar.setWeekDate(weekYear, weekOfYear, Calendar.MONDAY);
+		Date date=calendar.getTime();
+		return date;
+	}
+	
+	/**
+	 * 获取指定年的第几周的结束日期
+	 * @param weekYear 年
+	 * @param weekOfYear 指定年的第几周
+	 * @return
+	 */
+	public static Date getEndDateByWeekofYear(int weekYear,int weekOfYear) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setFirstDayOfWeek(Calendar.MONDAY);
+		calendar.setMinimalDaysInFirstWeek(7);
+		calendar.setWeekDate(weekYear, weekOfYear, Calendar.SUNDAY);
+		Date date=calendar.getTime();
+		return date;
+	}
+	
+	/**
+	 * 获取指定年的最大周数
+	 * @param year
+	 * @return
+	 */
+	public static int getMaxYearWeek(int year) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setFirstDayOfWeek(Calendar.MONDAY);
+		calendar.setMinimalDaysInFirstWeek(7);
+		calendar.set(year, Calendar.DECEMBER, 31, 23, 59, 59);
+		int week=calendar.get(Calendar.WEEK_OF_YEAR);
+		return week;
+	}
+	
+	/***
+	 * 根据年份和月份获取当前月份的最后一天
+	 * @param year
+	 * @param month
+	 * @return
+	 */
+	public static String getLastDayOfMonth(int year, int month) {
+		Calendar cal = Calendar.getInstance();
+		cal.set(Calendar.YEAR, year);
+		cal.set(Calendar.MONTH, month-1);
+		cal.set(Calendar.DAY_OF_MONTH, 1);
+		int value = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
+		cal.set(Calendar.DAY_OF_MONTH, value);
+		String dateStr=dateFormat(cal.getTime(),"yyyy-MM-dd");
+		return dateStr;
+	}
+	
+	/**
+	 * 根据年、第几周、星期几获取日期
+	 * @param weekYear 年
+	 * @param weekOfYear 第几周
+	 * @param week 星期几
+	 * @return
+	 */
+	public static Date getDateByYearWeek(int weekYear,int weekOfYear,int week) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setFirstDayOfWeek(Calendar.MONDAY);
+		calendar.setMinimalDaysInFirstWeek(7);
+		calendar.setWeekDate(weekYear, weekOfYear, getCalendarWeek(week));
+		Date date=calendar.getTime();
+		return date;
+	}
+	
+	public static int getCalendarWeek(int week) {
+		switch(week){
+			case 1:
+				return Calendar.MONDAY;
+			case 2:
+				return Calendar.TUESDAY;
+			case 3:
+				return Calendar.WEDNESDAY;
+			case 4:
+				return Calendar.THURSDAY;
+			case 5:
+				return Calendar.FRIDAY;
+			case 6:
+				return Calendar.SATURDAY;
+			case 7:
+				return Calendar.SUNDAY;
+			default:
+				return Calendar.SUNDAY;
+		}
+	}
+	
+	/**
+	 * 返回传入的日期的前N周或后N周
+	 * @param date
+	 * @param weeks
+	 * @return
+	 */
+	public static String getFutureWeekOfYear(Date date, int weeks) {
+        String future = "";
+        try {
+            Calendar calendar = GregorianCalendar.getInstance();
+            calendar.setTime(date);
+            calendar.add(Calendar.WEEK_OF_YEAR, weeks);
+            date = calendar.getTime();
+            future=getWeekOfYear(date);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return future;
+    }
 
     public static void main(String[] args) {
         try {
