@@ -28,6 +28,7 @@
 	
 	<task:annotation-driven />
 	
+	<bean id="restTemplate" class="org.springframework.web.client.RestTemplate"></bean>
 	
 	<import resource="spring-jdbc.xml"/>
 	<import resource="spring-shiro.xml"/>
