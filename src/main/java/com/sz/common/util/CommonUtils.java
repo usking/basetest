@@ -20,6 +20,7 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -27,10 +28,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
 import java.util.Random;
 import java.util.UUID;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -50,6 +51,8 @@ import net.sf.json.xml.XMLSerializer;
  * @author sjz
  */
 public class CommonUtils {
+	
+	private CommonUtils() {}
 
     public static String getUUID() {
         return UUID.randomUUID().toString().replaceAll("-", "");
@@ -797,6 +800,28 @@ public class CommonUtils {
         String future=getWeekOfYear(date);
         return future;
     }
+	
+	/**
+	 * 获取开始时间到结束时间的日期列表 yyyy-MM-dd
+	 * @param beginTime
+	 * @param endTime
+	 * @return
+	 * @throws ParseException
+	 */
+	public static List<String> getDateList(String beginTime,String endTime) throws ParseException {
+		List<String> dateList=new ArrayList<>();
+		Date date1=CommonUtils.stringToDate(beginTime, "yyyy-MM-dd");
+		Date date2=CommonUtils.stringToDate(endTime, "yyyy-MM-dd");
+		long s1=date1.getTime();
+		long s2=date2.getTime();
+		long oneDay = 24 * 60 * 60 * 1000l;
+		while(s1<=s2) {
+			date1=new Date(s1);
+			dateList.add(CommonUtils.dateFormat(date1, "yyyy-MM-dd"));
+			s1+=oneDay;
+		}
+		return dateList;
+	}
 
     public static void main(String[] args) {
         try {
