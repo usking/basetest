@@ -822,6 +822,51 @@ public class CommonUtils {
 		}
 		return dateList;
 	}
+	
+	/**
+	 * 判断时间段是否重叠
+	 * @param dateSectionList  开始时间+逗号+结束时间  （如：08:00,12:10）
+	 * @param pattern  如果为null则默认格式为yyyy-MM-dd HH:mm:ss
+	 * @return
+	 * @throws Exception 
+	 */
+	public static boolean doTimeOverlap(List<String> dateSectionList,String pattern) throws Exception {
+		boolean overlapFlag=false;
+		if(pattern==null || "".equals(pattern)) {
+			pattern="yyyy-MM-dd HH:mm:ss";
+		}
+		boolean flag=true;
+		for(int i=0;i<dateSectionList.size();i++) {
+			if(!flag) {
+				break;
+			}
+			
+			String dateSection1=dateSectionList.get(i);
+			String s1=dateSection1.split(",")[0];
+			String e1=dateSection1.split(",")[1];
+			Date start1=stringToDate(s1, pattern);
+			Date end1=stringToDate(e1, pattern);
+			if(start1.getTime() > end1.getTime()) {
+				throw new Exception("开始时间不能晚于结束时间");
+			}
+			for(int j=0;j<dateSectionList.size();j++) {
+				if(j==i) {
+					continue;
+				}
+				String dateSection2=dateSectionList.get(j);
+				String s2=dateSection2.split(",")[0];
+				String e2=dateSection2.split(",")[1];
+				Date start2=stringToDate(s2, pattern);
+				Date end2=stringToDate(e2, pattern);
+				if(start1.getTime() <= end2.getTime() && end1.getTime() >= start2.getTime()) {
+					overlapFlag=true;
+					flag=false;
+					break;
+				}
+			}
+		}
+		return overlapFlag;
+	}
 
     public static void main(String[] args) {
         try {
