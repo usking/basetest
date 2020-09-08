@@ -385,6 +385,33 @@
        	<artifactId>core</artifactId>
        	<version>3.3.0</version>
    	</dependency>
+   	
+   	
+   	<!-- zookeeper -->
+   	<dependency>
+        <groupId>org.apache.zookeeper</groupId>
+        <artifactId>zookeeper</artifactId>
+        <version>3.4.14</version>
+    </dependency>
+    
+    <dependency>
+	    <groupId>org.apache.curator</groupId>
+	    <artifactId>curator-framework</artifactId>
+	    <version>4.0.0</version>
+	</dependency>
+	
+	<dependency>
+	  <groupId>org.apache.curator</groupId>
+	  <artifactId>curator-recipes</artifactId>
+	  <version>4.0.0</version>
+	</dependency>
+	
+	<!-- 自动化测试工具 -->
+	<dependency>
+	  <groupId>org.seleniumhq.selenium</groupId>
+	  <artifactId>selenium-java</artifactId>
+	  <version>3.141.59</version>
+	</dependency>
 	
   
   </dependencies>
