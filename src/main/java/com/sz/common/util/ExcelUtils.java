@@ -9,6 +9,7 @@ import java.text.NumberFormat;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
@@ -20,6 +21,14 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.RichTextString;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFRichTextString;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class ExcelUtils {
 
@@ -30,8 +39,8 @@ public class ExcelUtils {
     }
 
     public static String[][] readExcel(InputStream is, int sheetNum, int startRowNum, int startColNum) throws IOException {
-        HSSFWorkbook wb = new HSSFWorkbook(is);
-        HSSFSheet childSheet = wb.getSheetAt(sheetNum);
+        Workbook wb = new HSSFWorkbook(is);
+        Sheet childSheet = wb.getSheetAt(sheetNum);
         int rows = childSheet.getLastRowNum();
         if(childSheet.getRow(startRowNum)==null){
         	return new String[0][0];
@@ -46,8 +55,8 @@ public class ExcelUtils {
             int tempColNum = startColNum;
             for (int j = 0; j < tempCols; j++) {
                 String str = "";
-                HSSFCell cell=null;
-                HSSFRow row=childSheet.getRow(tempRowNum);
+                Cell cell=null;
+                Row row=childSheet.getRow(tempRowNum);
                 if(row!=null) {
                 	cell = row.getCell(tempColNum);
                 }
@@ -84,13 +93,19 @@ public class ExcelUtils {
      * @param rowList 外层是行List，内层是列List
      * @throws IOException
      */
-    public static void writeExcel(OutputStream out,String sheetTitle,String[] headers,List<List<String>> rowList) throws IOException {
-    	HSSFWorkbook workbook=new HSSFWorkbook();
-        HSSFSheet sheet=workbook.createSheet(sheetTitle);
+    public static void writeExcel(OutputStream out,String sheetTitle,String[] headers,List<List<String>> rowList,String suffix) throws IOException {
+    	Workbook workbook=null;
+    	if("xlsx".equals(suffix)) {
+    		workbook=new XSSFWorkbook();
+    	}else {
+    		workbook=new HSSFWorkbook();
+    	}
+    	
+        Sheet sheet=workbook.createSheet(sheetTitle);
         sheet.setDefaultColumnWidth(20);
         
         //样式
-        HSSFCellStyle style=workbook.createCellStyle();
+        CellStyle style=workbook.createCellStyle();
         style.setFillForegroundColor(HSSFColor.WHITE.index);
         style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
         style.setBorderBottom(HSSFCellStyle.BORDER_THIN);
@@ -99,17 +114,22 @@ public class ExcelUtils {
         style.setBorderTop(HSSFCellStyle.BORDER_THIN);
         style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
         //字体
-        HSSFFont font=workbook.createFont();
+        Font font=workbook.createFont();
         font.setColor(HSSFColor.BLACK.index);
         font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
         style.setFont(font);
         
         //列头
-        HSSFRow row=sheet.createRow(0);
+        Row row=sheet.createRow(0);
         for (int i=0;i<headers.length;i++) {
-            HSSFCell cell=row.createCell(i);
+            Cell cell=row.createCell(i);
             cell.setCellStyle(style);
-            HSSFRichTextString text=new HSSFRichTextString(headers[i]);
+            RichTextString text=null;
+            if("xlsx".equals(suffix)) {
+            	text=new XSSFRichTextString(headers[i]);
+            }else {
+            	text=new HSSFRichTextString(headers[i]);
+            }
             cell.setCellValue(text);
         }
         
@@ -119,8 +139,13 @@ public class ExcelUtils {
         	row = sheet.createRow(i+1);
         	for(int j=0;j<headers.length;j++) {
         		String content=columnList.get(j);
-        		HSSFCell cell = row.createCell(j);
-	            HSSFRichTextString text = new HSSFRichTextString(content);
+        		Cell cell = row.createCell(j);
+	            RichTextString text = new HSSFRichTextString(content);
+	            if("xlsx".equals(suffix)) {
+	            	text = new XSSFRichTextString(content);
+	            }else {
+	            	text = new HSSFRichTextString(content);
+	            }
 	            cell.setCellValue(text);
         	}
         }

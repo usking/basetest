@@ -111,7 +111,7 @@ public class ExampleService {
 		return sb.toString();
 	}
 	
-	public void writeExcel(OutputStream out) throws IOException {
+	public void writeExcel(OutputStream out,String suffix) throws IOException {
 		String sheetTitle="测试sheet";
 		String[] headers= {"标题a","标题b","标题c","我是标题"};
 		
@@ -125,7 +125,7 @@ public class ExampleService {
 		for(int i=0;i<5;i++) {
 			rowList.add(columnList);
 		}
-		ExcelUtils.writeExcel(out, sheetTitle, headers, rowList);
+		ExcelUtils.writeExcel(out, sheetTitle, headers, rowList, suffix);
 	}
 
 	public static void main(String[] args) {

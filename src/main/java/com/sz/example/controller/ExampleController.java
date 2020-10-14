@@ -367,9 +367,9 @@ public class ExampleController extends BaseController {
 	
 	@RequestMapping(value="/writeExcel")
 	public void writeExcel(HttpServletResponse response) throws IOException {
-		String fileName="测试excel.xls";
+		String fileName="测试excel.xlsx";
 		response.setContentType("application/x-download");
 		response.setHeader("Content-disposition", "attachment; filename="+ new String(fileName.getBytes("GBK"),"ISO8859-1"));
-		exampleService.writeExcel(response.getOutputStream());
+		exampleService.writeExcel(response.getOutputStream(),"xlsx");
 	}
 }
