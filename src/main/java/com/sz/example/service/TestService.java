@@ -119,6 +119,19 @@ public class TestService {
 		this.printItem(page.getList());
 	}
 	
+	public void testHibernate05() {
+		String id="5BD694553B42478CA4A550A031EDD152";
+		Item item = baseDao.getHibernateDao().findById(Item.class, id);
+		item.setTitle("a33");
+		baseDao.getHibernateDao().update(item);
+		
+		Item item2 = baseDao.getHibernateDao().findById(Item.class, item.getId());
+		item2.setTitle("a44");
+		baseDao.getHibernateDao().update(item2);
+		
+		this.printItem(item2);
+	}
+	
 	private Item newItem(){
 		Item item=new Item();
 		item.setId(CommonUtils.getUUID());
@@ -195,11 +208,12 @@ public class TestService {
 			//s.testHibernate03();
 			//s.testHibernate04();
 			//s.callProc1();
-			s.callProc2();
-			System.out.println("main方法执行完成");
+			//s.callProc2();
+			s.testHibernate05();
 		}catch(Exception ex){
 			ex.printStackTrace();
 		}
+		System.out.println("main方法执行完成");
 	}
 	
 	

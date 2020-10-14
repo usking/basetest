@@ -11,6 +11,7 @@ import java.util.zip.ZipOutputStream;
 
 import com.alibaba.fastjson.JSON;
 import com.sz.common.util.CommonUtils;
+import com.sz.common.util.HttpClientUtils;
 import com.sz.common.util.SslUtils;
 import com.sz.entity.Entity1;
 
@@ -109,8 +110,9 @@ public class Test02 {
 
 	public static void main(String[] args) {
 		try {
-			int s=287%32;
+			int s=390%32;
 			System.out.println(s);
+			
 			
 		}catch(Exception ex) {
 			ex.printStackTrace();
