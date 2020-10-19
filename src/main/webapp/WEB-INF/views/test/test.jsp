@@ -31,7 +31,20 @@ function testAjax(){
 	});
 }
 
-
+function testRocketmq(){
+	$.ajax({
+		type:"POST",
+		url:"test/testRocketmq",
+		//data: {},
+		dataType:"json",
+		success: function(data){
+			layer.alert(data.code+" "+data.message);
+		},
+		error:function(XMLHttpRequest,textStatus){
+			layer.alert("服务器异常:"+XMLHttpRequest.responseText);
+		}
+	});
+}
 
 
 </script>
@@ -44,6 +57,9 @@ function testAjax(){
   		<h3>各种测试</h3>
   		<a href="javascript:;" class="btn btn-info" onclick="testAjax()">测试ajax</a>
   		
+  		<br /><br />
+  		
+  		<a href="javascript:;" class="btn btn-info" onclick="testRocketmq()">测试rocketmq</a>
   		<br /><br />
   		
 <jsp:include page="/WEB-INF/views/layout-bottom.jsp"></jsp:include>

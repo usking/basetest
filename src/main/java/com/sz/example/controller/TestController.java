@@ -8,8 +8,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.sz.common.aop.TestAnnotation;
 import com.sz.common.controller.BaseController;
+import com.sz.common.vo.Result;
 import com.sz.common.vo.ResultVo;
 import com.sz.example.service.TestService;
+import com.sz.rocketmq.RocketmqProducerService;
 
 @Controller
 @RequestMapping("/test")
@@ -17,6 +19,8 @@ import com.sz.example.service.TestService;
 public class TestController extends BaseController {
 	@Resource
 	private TestService testService;
+	@Resource
+	private RocketmqProducerService rocketmqProducerService;
 	
 	@RequestMapping("/index")
 	public String testIndex() {
@@ -62,5 +66,17 @@ public class TestController extends BaseController {
 			ex.printStackTrace();
 		}
 		return "end";
+	}
+	
+	@RequestMapping("/testRocketmq")
+	@ResponseBody
+	public Result testRocketmq() {
+		try {
+			rocketmqProducerService.send();
+			return Result.success(null);
+		}catch(Exception ex) {
+			ex.printStackTrace();
+			return Result.error(ex.getMessage());
+		}
 	}
 }
