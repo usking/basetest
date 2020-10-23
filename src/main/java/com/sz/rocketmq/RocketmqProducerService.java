@@ -15,7 +15,7 @@ public class RocketmqProducerService {
 	
 	private DefaultMQProducer producer = null;
 	
-	@PostConstruct
+	//@PostConstruct
 	public void initMQProducer() {
 		producer = new DefaultMQProducer("defaultGroup");
         producer.setNamesrvAddr("1.1.1.107:9876");

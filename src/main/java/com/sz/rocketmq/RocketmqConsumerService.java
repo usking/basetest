@@ -37,7 +37,7 @@ public class RocketmqConsumerService {
 
 	private DefaultMQPushConsumer consumer = null;
 
-	@PostConstruct
+	//@PostConstruct
 	public void initMQConsumer() {
         consumer = new DefaultMQPushConsumer("defaultGroup");
         consumer.setNamesrvAddr("1.1.1.107:9876");
