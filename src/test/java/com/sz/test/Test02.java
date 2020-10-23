@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.ParseException;
+import java.util.concurrent.CyclicBarrier;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -107,11 +108,28 @@ public class Test02 {
 		System.out.println(arr[(int)arrIndex]);
 	}
 	
+	public static void lambda() {
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				System.out.println("aaa");
+			}
+		}).start();
+		
+		new Thread(()->{
+			System.out.println("bbb");
+		}).start();
+	}
+	
+	public void t7() {
+		CyclicBarrier c=new CyclicBarrier(10,()->{});
+	}
+	
 
 	public static void main(String[] args) {
 		try {
-			int s=390%32;
-			System.out.println(s);
+//			int s=390%32;
+//			System.out.println(s);
 			
 			
 		}catch(Exception ex) {
