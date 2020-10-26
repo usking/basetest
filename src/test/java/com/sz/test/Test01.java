@@ -27,6 +27,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -392,17 +396,31 @@ public class Test01 {
 		return overlapFlag;
 	}
 	
+	public void testLock() {
+		Lock lock=new ReentrantLock();
+		Condition condition=lock.newCondition();
+		try {
+			lock.lock();
+			System.out.println(Thread.currentThread().getName()+"==>"+CommonUtils.dateFormat(new Date(), null));
+			condition.await(5, TimeUnit.SECONDS);
+			System.out.println(Thread.currentThread().getName()+"==>"+CommonUtils.dateFormat(new Date(), null));
+		}catch(Exception ex) {
+			ex.printStackTrace();
+		}finally {
+			condition.signalAll();
+			lock.unlock();
+		}
+	}
+	
 	
 	public static void main(String[] args) {
 		try {
-			List<String> list=new ArrayList<>();
-			list.add("08:00,13:00");
-			list.add("13:01,16:00");
-			list.add("09:00,10:01");
-			list.add("19:00,20:01");
+			for(int i=1;i<=10;i++) {
+				new Thread(()->{
+					new Test01().testLock();
+				},i+"").start();
+			}
 			
-			boolean s = doTimeOverlap(list, "HH:mm");
-			System.out.println(s);
 		}catch(Exception ex) {
 			ex.printStackTrace();
 		}
