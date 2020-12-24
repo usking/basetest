@@ -20,12 +20,15 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 public class Test02 {
+	static int a;
 	
 	public void t1() {
 		Entity1 e1=new Entity1();
 		e1.setTitle("aa");
 		t2(e1);
 		System.out.println(e1.getTitle());
+		
+		System.out.println(a);;
 	}
 	
 	public void t2(Entity1 e1) {
@@ -125,13 +128,25 @@ public class Test02 {
 		CyclicBarrier c=new CyclicBarrier(10,()->{});
 	}
 	
+	public boolean t8() {
+		for(int i=0;i<10;i++) {
+			if(i==5) {
+				return true;
+			}
+			System.out.println(i);
+		}
+		return false;
+	}
+	
 
 	public static void main(String[] args) {
 		try {
 //			int s=390%32;
 //			System.out.println(s);
 			
+			//new Test02().t1();
 			
+			new Test02().t8();
 		}catch(Exception ex) {
 			ex.printStackTrace();
 		}

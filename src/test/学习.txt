@@ -162,7 +162,7 @@ java8中接口会有default方法
 =======================================================================
 ~java常见集合
 Map和Collection是所有集合的父接口
-Map: HashMao,TreeMap,Hashtable,ConcurrentHashMap,Properties
+Map: HashMap,TreeMap,Hashtable,ConcurrentHashMap,Properties
 Set:hashSet,TreeSet,LinkedHashSet
 List:ArrayList,LinkedList,Stack,Vector
 =======================================================================
