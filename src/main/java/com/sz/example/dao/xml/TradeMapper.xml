@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sz.example.dao.mapper.TradeMapper" >
+  <resultMap id="TradeMap" type="com.sz.example.pojo.Trade" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="DATE" />
+  </resultMap>
+  
+  <insert id="insertTrade" useGeneratedKeys="true" keyProperty="id">
+  	insert into trade(title,create_time) values(#{title},#{createTime})
+  </insert>
+</mapper>

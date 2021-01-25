@@ -6,13 +6,13 @@ import java.io.FileOutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.ParseException;
+import java.util.Date;
 import java.util.concurrent.CyclicBarrier;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 import com.alibaba.fastjson.JSON;
 import com.sz.common.util.CommonUtils;
-import com.sz.common.util.HttpClientUtils;
 import com.sz.common.util.SslUtils;
 import com.sz.entity.Entity1;
 
@@ -128,25 +128,29 @@ public class Test02 {
 		CyclicBarrier c=new CyclicBarrier(10,()->{});
 	}
 	
-	public boolean t8() {
-		for(int i=0;i<10;i++) {
-			if(i==5) {
-				return true;
-			}
-			System.out.println(i);
-		}
-		return false;
+	public void t8() throws ParseException {
+		String d="2021-01-02 01:51:00";
+		Date now=CommonUtils.stringToDate(d, null);
+		//Date now=new Date();
+		String prevdayStr=CommonUtils.getFutureDay(CommonUtils.dateFormat(now, null), "yyyy-MM-dd HH:mm:ss", -1);
+		Date date=CommonUtils.stringToDate(prevdayStr, null);
+		String year=CommonUtils.dateFormat(date, "yyyy");
+		String month=CommonUtils.dateFormat(date, "M");
+		String day=CommonUtils.dateFormat(date, "d");
+		int times=CommonUtils.getWeek(date);//星期几
+		
+		System.out.println(0);
 	}
 	
 
 	public static void main(String[] args) {
 		try {
-//			int s=390%32;
-//			System.out.println(s);
+			int s=770%32;
+			System.out.println(s);
 			
 			//new Test02().t1();
 			
-			new Test02().t8();
+			//new Test02().t8();
 		}catch(Exception ex) {
 			ex.printStackTrace();
 		}

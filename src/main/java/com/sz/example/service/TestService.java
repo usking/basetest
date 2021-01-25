@@ -7,15 +7,22 @@ import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.sql.Types;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.servlet.ServletContext;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.jdbc.core.PreparedStatementCreator;
+import org.springframework.jdbc.core.PreparedStatementCreatorFactory;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,7 +36,9 @@ import com.sz.common.util.CommonUtils;
 import com.sz.common.util.PageModel;
 import com.sz.common.util.PageUtils;
 import com.sz.example.dao.mapper.ItemMapper;
+import com.sz.example.dao.mapper.TradeMapper;
 import com.sz.example.pojo.Item;
+import com.sz.example.pojo.Trade;
 
 @Service
 @Transactional
@@ -39,6 +48,8 @@ public class TestService {
 	private BaseDao baseDao;
 	@Resource
 	private ItemMapper itemMapper;
+	@Resource
+	private TradeMapper tradeMapper;
 	
 	public PageModel testPageGoods(int pageNo,int pageSize,String title){
 		List<Goods> allGoodsList=GoodsDB.getAllGoods(title);
@@ -193,6 +204,33 @@ public class TestService {
 			printItemMap(map);
 		}
 	}
+	
+	
+	public void testTrade01() {
+		Date now=new Date();
+		Trade trade=new Trade();
+		trade.setTitle("测试"+CommonUtils.dateFormat(now, "yyyyMMddHHmmss"));
+		trade.setCreateTime(now);
+		//int n = tradeMapper.insertTrade(trade);//xml加入useGeneratedKeys="true" keyProperty="id"
+		int n=tradeMapper.insert(trade);//实体加入@GeneratedValue(strategy=GenerationType.IDENTITY)
+		System.out.println("自增主键为："+trade.getId());
+	}
+	
+	public void testTrade02() throws Exception {
+		Date now=new Date();
+		Trade trade=new Trade();
+		trade.setTitle("测试"+CommonUtils.dateFormat(now, "yyyyMMddHHmmss"));
+		trade.setCreateTime(now);
+		
+		String sql = baseDao.getSpringBaseDao().makeSql("insert", trade);
+		Object[] params = baseDao.getSpringBaseDao().getArgs("insert", trade);
+		KeyHolder keyHolder = new GeneratedKeyHolder();
+		PreparedStatementCreatorFactory psmtFactory=new PreparedStatementCreatorFactory(sql,Types.VARCHAR,Types.TIMESTAMP);
+		psmtFactory.setReturnGeneratedKeys(true);
+		PreparedStatementCreator psmtCreator = psmtFactory.newPreparedStatementCreator(params);
+		int n=baseDao.getSpringBaseDao().getJdbcTemplate().update(psmtCreator,keyHolder);
+		System.out.println("自增主键为："+keyHolder.getKey().intValue());
+	}
 
 	public static void main(String[] args) {
 		try{
@@ -209,7 +247,9 @@ public class TestService {
 			//s.testHibernate04();
 			//s.callProc1();
 			//s.callProc2();
-			s.testHibernate05();
+			//s.testHibernate05();
+			//s.testTrade01();
+			s.testTrade02();
 		}catch(Exception ex){
 			ex.printStackTrace();
 		}

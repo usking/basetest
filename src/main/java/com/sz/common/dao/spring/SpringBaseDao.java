@@ -123,7 +123,7 @@ public class SpringBaseDao {
      * @return
      * @throws Exception
      */
-	private <T> String makeSql(String sqlFlag,T entity) throws Exception {
+	public <T> String makeSql(String sqlFlag,T entity) throws Exception {
         StringBuffer sql = new StringBuffer();
         Field[] fields = entity.getClass().getDeclaredFields();
         String tableName=this.getTableName(entity);
@@ -181,7 +181,7 @@ public class SpringBaseDao {
 	 * @return
 	 * @throws Exception
 	 */
-	private <T> Object[] getArgs(String sqlFlag,T entity) throws Exception {
+	public <T> Object[] getArgs(String sqlFlag,T entity) throws Exception {
         Field[] fields = entity.getClass().getDeclaredFields();
         if (sqlFlag.equals(SQL_INSERT)) {
         	List<Object> list=new ArrayList<Object>();
