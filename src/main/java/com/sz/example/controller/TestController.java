@@ -79,4 +79,17 @@ public class TestController extends BaseController {
 			return Result.error(ex.getMessage());
 		}
 	}
+	
+	
+	/**************通用后台管理页面************/
+	
+	@RequestMapping("/admin/index")
+	public String adminIndex() {
+		return this.getJspPath("admin/index");
+	}
+	
+	@RequestMapping("/admin/console")
+	public String consoleIndex() {
+		return this.getJspPath("admin/console");
+	}
 }

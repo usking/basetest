@@ -44,7 +44,8 @@ $(function(){
     	{id:100, pId:1, name: "百度",url:"http://www.baidu.com/",target:"_blank"},
     	{id:2, pId:0, name: "测试"},
     	{id:21, pId:2, name: "测试1",url:"",target:"_self"},
-    	{id:22, pId:2, name: "测试2",url:"",target:"_self"}
+    	{id:22, pId:2, name: "测试2",url:"",target:"_self"},
+    	{id:23, pId:0, name: "通用后台管理",url:"test/admin/index",target:"_self"}
     ];
 	zTreeObj = $.fn.zTree.init($("#menu"), ztreeSettings, zNodes);
 });
