@@ -4,6 +4,10 @@ cat /etc/os-release
 安装docker
 centOS7以上
 https://docs.docker.com/engine/install/centos/
+yum安装gcc相关环境（需要确保虚拟机可以上外网）
+yum -y install gcc
+yum -y install gcc-c++
+
 1.卸载旧的版本
 yum remove docker \
                   docker-client \
@@ -274,9 +278,105 @@ docker network ls
 
 docker互联 --link
 
-自定义网络，网络连通
+自定义网络，网络连通。可通过容器名访问
 ====================================================================
-Docker Compose
-Docker Swarm
+Docker Compose 
+管理多容器，生成project，一组关联的容器。一键启动所有服务
+https://docs.docker.com/compose
+Dockerfile（编写自己的Dockerfile文件）
+docker-compose.yml（这个文件写好 就可以一键启动了）
+docker-compose up
+
+安装Compose
+sudo curl -L "https://github.com/docker/compose/releases/download/1.28.4/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+授权
+sudo chmod +x /usr/local/bin/docker-compose
+命令 查看安装是否成功
+docker-compose version
+
+官方体验步骤
+1.创建文件app.py
+2.创建Dockerfile
+3.创建docker-compose.yml文件
+	version:"3.9"
+	services:
+	  myweb:
+	    build: .
+		ports:
+		  - "8000:8080"
+	  redis:
+	    image: "redis:alpine"
+4.启动 docker-compose up
+
+停止
+docker-compose down或者Ctrl+c
+
+重新构建
+docker-compose up --build
+==========================================================================
+yaml规则
+version:"3" #版本
+services:   #服务
+  服务1:web
+    #服务配置
+	images
+	build
+	network
+	...
+  服务2:redis
+#其它配置 网络、卷、全局规则
+volumes:
+=============================================================================
+Docker Swarm  集群部署，服务高可用
+https://docs.docker.com/engine/swarm/
+
+初始化节点
+docker swarm init --advertise-addr 主机ip
+加入一个节点
+docker swarm join
+
+获取令牌，在主节点上执行
+docker swarm join-token manager  #生成manager节点
+docker swarm join-token worker   #生成worker节点
+
+步骤：
+1.生成主节点init
+2.加入（manager,worker）
+
+查看节点（只能在manager节点执行）
+docker node ls
+
+服务
+docker service create -p 8888:80 --name mynginx nginx
+
+docker run     #容器启动，不具有扩缩容器
+docker service #服务，具有扩缩容器，滚动更新
+
+查看服务
+docker service ps
+
+启动10个副本，动态扩缩容器，启动了10个mynginx容器，任意节点都可访问
+docker service update --replicas 10 mynginx
+docker service scale mynginx=10
+=============================================================================
+Docker Stack
+docker-compose up -d wordpress.yml #单机项目部署
+docker stack deploy wordpress.yml  #集群部署
+======================================================
+Docker Secret
+安全，证书，密码
+======================================================
+Docker Config
+配置
+================================================================================
+k8s
+
+
+
+
+
+
+
+
 
 
